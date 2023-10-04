@@ -1,0 +1,28 @@
+Pitch Shift Effect: Settings
+
+** using chorus_original sound 
+
+Original excerpted from sound by KeffyStay on freesound.org
+http://freesound.org/people/KeffyStay/sounds/210716/
+
+
+pitchshift_ex1 (highest quality, +1 semitone)
+--------------
+FFT Size: 2048
+Overlap: 1/8 Window
+Window Type: Hann
+Pitch Shift: +1
+
+pitchshift_ex2 (highest quality, -3 semitones)
+--------------
+FFT Size: 2048
+Overlap: 1/8 Window
+Window Type: Hann
+Pitch Shift: -3
+
+pitchshift_ex3 (faster but lower quality)
+--------------
+FFT Size: 512
+Overlap: 1/4 Window
+Window Type: Hann
+Pitch Shift: +1

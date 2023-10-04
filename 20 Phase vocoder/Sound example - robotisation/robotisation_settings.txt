@@ -1,0 +1,18 @@
+Robotisation Effect: Settings
+
+Original sound by Intimidated on freesound.org
+http://freesound.org/people/Intimidated/sounds/61571/
+
+robotisation_ex1
+--------------
+Window Size: 1024
+Hop Size: 256
+Window: Hann
+
+
+robotisation_ex2 (lower pitch)
+--------------
+Window Size: 1024
+Hop Size: 800
+Window: Hann
+
