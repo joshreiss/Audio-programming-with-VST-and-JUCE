@@ -1,0 +1,21 @@
+Compressor Effect: Settings
+
+Original sound by mrwolf14 on freesound.org
+http://freesound.org/people/mrwolf14/sounds/51198/
+
+compressor_ex1
+--------------
+Ratio: 10.0
+Attack Time: 5.0ms
+Release Time: 250.0ms
+Threshold: -30dB
+Gain: +6dB
+
+
+compressor_ex2
+--------------
+Ratio: 3.0
+Attack Time: 5.0ms
+Release Time: 400.0ms
+Threshold: -40dB
+Gain: +6dB

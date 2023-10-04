@@ -1,0 +1,24 @@
+Distortion Effect: Settings
+
+Original sound by Goup_1 on freesound.org
+http://freesound.org/people/Goup_1/sounds/181380/
+
+distortion_ex1
+--------------
+Type: Soft clipping (exp)
+Gain: +20dB
+
+distortion_ex2
+--------------
+Type: Hard clipping
+Gain: +20dB
+
+distortion_ex3
+--------------
+Type: Full-wave rectifier
+Gain: +2dB
+
+distortion_ex4
+--------------
+Type: Half-wave rectifier
+Gain: +2dB
