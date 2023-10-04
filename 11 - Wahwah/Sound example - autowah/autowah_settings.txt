@@ -1,0 +1,34 @@
+Autowah Effect: Settings
+
+Original sound by Goup_1 on freesound.org
+http://freesound.org/people/Goup_1/sounds/181380/
+
+autowah_ex1 (envelope follower)
+-----------
+Frequency: 350
+Q: 5.0
+LFO Frequency: 2.0
+LFO Depth: 0.0
+Envelope Depth: 3000.0
+Attack: 0.005
+Release: 0.025
+
+autowah_ex2 (LFO wah)
+-----------
+Frequency: 300
+Q: 5.0
+LFO Frequency: 1.1
+LFO Depth: 1200.0
+Envelope Depth: 0.0
+Attack: 0.005
+Release: 0.025
+
+autowah_ex3 (extreme LFO wah)
+-----------
+Frequency: 300
+Q: 15.0
+LFO Frequency: 4.4
+LFO Depth: 1200.0
+Envelope Depth: 0.0
+Attack: 0.005
+Release: 0.025

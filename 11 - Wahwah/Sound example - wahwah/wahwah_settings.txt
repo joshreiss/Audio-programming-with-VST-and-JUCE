@@ -1,0 +1,11 @@
+Wah-Wah Effect: Settings
+
+** see autowah for further similar examples
+
+Original sound by Sub-d on freesound.org
+http://freesound.org/people/Sub-d/sounds/47465/
+
+wahwah_ex1
+-----------
+Centre Frequency: swept by hand
+Q: 5.0

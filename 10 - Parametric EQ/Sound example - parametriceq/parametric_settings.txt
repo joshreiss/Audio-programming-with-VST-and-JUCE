@@ -1,0 +1,16 @@
+Parametric EQ Effect: Settings
+
+Original excerpted from sound by UncleSigmund on freesound.org
+http://freesound.org/people/UncleSigmund/sounds/30432/
+
+parametric_ex1 (midrange boost)
+----------
+Frequency: 1000Hz
+Q: 3.0
+Gain: +6.0dB
+
+parametric_ex2 (lower midrange cut)
+----------
+Frequency: 500Hz
+Q: 1.5
+Gain: -9.0dB

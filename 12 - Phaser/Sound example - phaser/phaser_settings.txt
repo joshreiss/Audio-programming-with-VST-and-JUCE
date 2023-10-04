@@ -1,0 +1,39 @@
+Phaser Effect: Settings
+
+Original sound by Raggaman on freesound.org
+http://freesound.org/people/Raggaman/sounds/25483/
+
+phaser_ex1 (standard mono phaser)
+----------
+Base Frequency: 300
+Sweep Width: 3000
+Depth: 1.0
+Feedback: 0.0
+LFO Frequency: 0.5
+Stereo: Off
+LFO Waveform: Sine
+Number of Filters: 4
+
+
+phaser_ex2 (phaser with feedback)
+----------
+Base Frequency: 200
+Sweep Width: 4000
+Depth: 1.0
+Feedback: 0.5
+LFO Frequency: 0.8
+Stereo: Off
+LFO Waveform: Triangle
+Number of Filters: 4
+
+
+phaser_ex3 (stereo phaser)
+----------
+Base Frequency: 300
+Sweep Width: 3000
+Depth: 1.0
+Feedback: 0.2
+LFO Frequency: 0.5
+Stereo: On
+LFO Waveform: Triangle
+Number of Filters: 4

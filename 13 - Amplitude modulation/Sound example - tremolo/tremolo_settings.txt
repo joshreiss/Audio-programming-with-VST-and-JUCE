@@ -1,0 +1,24 @@
+Tremolo Effect: Settings
+
+Original sound by dataset on freesound.org
+http://freesound.org/people/dataset/sounds/44543/
+
+tremolo_ex1
+-----------
+Frequency: 4.0
+Depth: 0.4
+Waveform: Sine
+
+
+tremolo_ex2 (faster, more pronounced tremolo)
+-----------
+Frequency: 6.0
+Depth: 1.0
+Waveform: Sine
+
+
+tremolo_ex3 (fast, square wave)
+-----------
+Frequency: 8.0
+Depth: 1.0
+Waveform: Square Wave, Sloped Edges
