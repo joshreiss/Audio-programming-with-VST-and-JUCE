@@ -1,0 +1,32 @@
+Ping-Pong Delay Effect: Settings
+
+using delay_original file
+
+Original sound by digifishmusic on freesound.org
+http://freesound.org/people/digifishmusic/sounds/94812/
+
+pingpong_ex1
+------------
+L-R Delay: 0.2
+R-L Delay: 0.2
+Feedback: 0.75
+Delayed Mix: 0.5
+Reverse Output: Off
+
+
+pingpong_ex2 (reversed outputs)
+------------
+L-R Delay: 0.2
+R-L Delay: 0.2
+Feedback: 0.75
+Delayed Mix: 0.5
+Reverse Output: On
+
+
+pingpong_ex3 (asymmetrical delay)
+------------
+L-R Delay: 0.2
+R-L Delay: 0.1
+Feedback: 0.75
+Delayed Mix: 0.5
+Reverse Output: Off

@@ -1,0 +1,27 @@
+Delay Effect: Settings
+
+Original sound by digifishmusic on freesound.org
+http://freesound.org/people/digifishmusic/sounds/94812/
+
+delay_ex1 (simple delay)
+----------
+Delay (sec): 0.5
+Feedback: 0.0
+Dry Mix: 1.0
+Delay (Wet) Mix: 0.2
+
+
+delay_ex2 (feedback delay)
+----------
+Delay (sec): 0.2
+Feedback: 0.5
+Dry Mix: 1.0
+Delay (Wet) Mix: 0.5
+
+
+delay_ex3 (more extreme feedback delay)
+----------
+Delay (sec): 0.181
+Feedback: 0.92
+Dry Mix: 1.0
+Delay (Wet) Mix: 0.5
