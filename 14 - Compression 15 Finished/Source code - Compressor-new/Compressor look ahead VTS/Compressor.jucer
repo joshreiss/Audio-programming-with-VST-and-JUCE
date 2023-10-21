@@ -24,8 +24,8 @@
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="NewProject"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="NewProject"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Compressor"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Compressor"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../../../modules"/>

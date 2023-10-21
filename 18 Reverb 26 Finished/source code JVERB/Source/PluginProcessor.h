@@ -15,12 +15,12 @@
 //==============================================================================
 /**
 */
-class DemoProjectAudioProcessor  : public AudioProcessor
+class JVerbAudioProcessor  : public AudioProcessor
 {
 public:
     //==============================================================================
-    DemoProjectAudioProcessor();
-    ~DemoProjectAudioProcessor();
+    JVerbAudioProcessor();
+    ~JVerbAudioProcessor();
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -61,5 +61,5 @@ private:
   float inputPhase = 0;
   Reverb reverb;
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoProjectAudioProcessor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JVerbAudioProcessor)
 };

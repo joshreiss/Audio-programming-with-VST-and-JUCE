@@ -16,11 +16,11 @@
 //==============================================================================
 /**
 */
-class DemoProjectAudioProcessorEditor  : public AudioProcessorEditor
+class JVerbAudioProcessorEditor  : public AudioProcessorEditor
 {
 public:
-    DemoProjectAudioProcessorEditor (DemoProjectAudioProcessor&);
-    ~DemoProjectAudioProcessorEditor();
+    JVerbAudioProcessorEditor (JVerbAudioProcessor&);
+    ~JVerbAudioProcessorEditor();
 
     //==============================================================================
     void paint (Graphics&) override;
@@ -29,7 +29,7 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    DemoProjectAudioProcessor& processor;
+    JVerbAudioProcessor& processor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DemoProjectAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JVerbAudioProcessorEditor)
 };

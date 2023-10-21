@@ -2,7 +2,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-DemoProjectAudioProcessor::DemoProjectAudioProcessor()
+JVerbAudioProcessor::JVerbAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -22,17 +22,17 @@ DemoProjectAudioProcessor::DemoProjectAudioProcessor()
   addParameter(freezeMode = new AudioParameterBool("freezeMode", "Freeze mode", 0));
 }
 
-DemoProjectAudioProcessor::~DemoProjectAudioProcessor()
+JVerbAudioProcessor::~JVerbAudioProcessor()
 {
 }
 
 //==============================================================================
-const String DemoProjectAudioProcessor::getName() const
+const String JVerbAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool DemoProjectAudioProcessor::acceptsMidi() const
+bool JVerbAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -41,7 +41,7 @@ bool DemoProjectAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool DemoProjectAudioProcessor::producesMidi() const
+bool JVerbAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -50,7 +50,7 @@ bool DemoProjectAudioProcessor::producesMidi() const
    #endif
 }
 
-bool DemoProjectAudioProcessor::isMidiEffect() const
+bool JVerbAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -59,49 +59,49 @@ bool DemoProjectAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double DemoProjectAudioProcessor::getTailLengthSeconds() const
+double JVerbAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int DemoProjectAudioProcessor::getNumPrograms()
+int JVerbAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int DemoProjectAudioProcessor::getCurrentProgram()
+int JVerbAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void DemoProjectAudioProcessor::setCurrentProgram (int index)
+void JVerbAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const String DemoProjectAudioProcessor::getProgramName (int index)
+const String JVerbAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void DemoProjectAudioProcessor::changeProgramName (int index, const String& newName)
+void JVerbAudioProcessor::changeProgramName (int index, const String& newName)
 {
 }
 
 //==============================================================================
-void DemoProjectAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void JVerbAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
   reverb.setSampleRate(sampleRate);
 }
 
-void DemoProjectAudioProcessor::releaseResources()
+void JVerbAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool DemoProjectAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool JVerbAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     ignoreUnused (layouts);
@@ -124,7 +124,7 @@ bool DemoProjectAudioProcessor::isBusesLayoutSupported (const BusesLayout& layou
 }
 #endif
 
-void DemoProjectAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
+void JVerbAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
   ScopedNoDenormals noDenormals;
   auto numChannels = buffer.getNumChannels();
@@ -142,25 +142,25 @@ void DemoProjectAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBu
 }
 
 //==============================================================================
-bool DemoProjectAudioProcessor::hasEditor() const
+bool JVerbAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-AudioProcessorEditor* DemoProjectAudioProcessor::createEditor()
+AudioProcessorEditor* JVerbAudioProcessor::createEditor()
 {
 	return new GenericAudioProcessorEditor(this);
 }
 
 //==============================================================================
-void DemoProjectAudioProcessor::getStateInformation (MemoryBlock& destData)
+void JVerbAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void DemoProjectAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void JVerbAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -170,5 +170,5 @@ void DemoProjectAudioProcessor::setStateInformation (const void* data, int sizeI
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new DemoProjectAudioProcessor();
+    return new JVerbAudioProcessor();
 }

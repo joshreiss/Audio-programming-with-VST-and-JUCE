@@ -12,7 +12,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-DemoProjectAudioProcessorEditor::DemoProjectAudioProcessorEditor (DemoProjectAudioProcessor& p)
+JVerbAudioProcessorEditor::JVerbAudioProcessorEditor (JVerbAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
     // Make sure that before the constructor has finished, you've set the
@@ -20,12 +20,12 @@ DemoProjectAudioProcessorEditor::DemoProjectAudioProcessorEditor (DemoProjectAud
     setSize (400, 300);
 }
 
-DemoProjectAudioProcessorEditor::~DemoProjectAudioProcessorEditor()
+JVerbAudioProcessorEditor::~JVerbAudioProcessorEditor()
 {
 }
 
 //==============================================================================
-void DemoProjectAudioProcessorEditor::paint (Graphics& g)
+void JVerbAudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
@@ -35,7 +35,7 @@ void DemoProjectAudioProcessorEditor::paint (Graphics& g)
     g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
 }
 
-void DemoProjectAudioProcessorEditor::resized()
+void JVerbAudioProcessorEditor::resized()
 {
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..

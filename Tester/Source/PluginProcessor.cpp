@@ -25,7 +25,7 @@ TesterAudioProcessor::TesterAudioProcessor()
   addParameter(gainParam = new AudioParameterFloat("GAIN", "Gain", 0.0f, 1.0f, 0.0f));
   addParameter(stimulusParam = new juce::AudioParameterChoice("STIMULUS", "Stimulus", { "Off", "Noise", "Sine wave", "Pulse wave" }, 1));
   addParameter(frequencyParam = new juce::AudioParameterFloat("FREQUENCY", "Frequency", 20.0f, 5000.0f, 1000.f));
-  addParameter(lfoFrequencyParam = new juce::AudioParameterFloat("LFOFREQUENCY", "LFO Frequency", 0.1f, 10.0f, 2000.f));
+  addParameter(lfoFrequencyParam = new juce::AudioParameterFloat("LFOFREQUENCY", "LFO Frequency", 0.1f, 10.0f, 4.f));
   addParameter(choice2Param = new juce::AudioParameterChoice("TWOCHOICE", "Two choice", { "X", "Y" }, 0));
   addParameter(boolParam = new juce::AudioParameterBool("BOOL", "Check box", false));
 }
@@ -155,7 +155,8 @@ void TesterAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
       if (index == 1) channelData[sample] = 2.0 * gainValue * ((double)rand() / RAND_MAX) - 1.0;
       else if (index == 2) channelData[sample] = gainValue * sinf(juce::MathConstants<float>::twoPi * inputPhase);
       else if (index == 3) {
-        if (lfoPhase < 0.05) channelData[sample] = gainValue * sinf(juce::MathConstants<float>::twoPi * inputPhase);
+        // Duration of pulse is duration = maxLFOphase / lfoFreq -> duration = 0.05 * lfoFreq / lfoFreq = 0.05s
+        if (lfoPhase < 0.05 * lfoFrequencyValue) channelData[sample] = gainValue * sinf(juce::MathConstants<float>::twoPi * inputPhase);
         else channelData[sample] = 0;
       }
       else channelData[sample] = 0;
