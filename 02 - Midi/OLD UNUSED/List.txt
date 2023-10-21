@@ -1,0 +1,11 @@
+
+* Basic midi plugin - from JUCE tutorial - just swaps gain - no external keyboard 
+* HandlingMidiEventsTutorial- from JUCE tutorial shows events on screen - includes listener - has external keyboard!!
+* MidiMessage - from JUCE tutorial - just printing midi messages - no external keyboard
+* SynthUsingMidiInputTutorial - explains synthesiser - no external keyboard but doc explains it!!
+Plugin examples
+  Multi-Out Synth
+*  Arpeggiator - from JUCE tutorial plugins - no external keyboard
+*  AudioPluginDemoExample - from examples - no external keyboard
+
+In the MainContentComponent constructor we initialise [3], [4], and [6]. We also take a note of the application start time so we can display the MIDI data timestamps relative to this
