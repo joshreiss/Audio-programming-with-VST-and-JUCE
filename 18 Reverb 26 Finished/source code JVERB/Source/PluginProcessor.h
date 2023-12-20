@@ -58,7 +58,6 @@ public:
 private:
   AudioParameterFloat* roomSize,* damping,* wetLevel,* dryLevel,* width;
   AudioParameterBool* freezeMode;
-  float inputPhase = 0;
   Reverb reverb;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (JVerbAudioProcessor)

@@ -61,17 +61,16 @@ private:
   float getLfoSample(float phase, int waveform);
   float interpolateSample(int type, float delayReadPosition, float* delayData, int delayBufferLength);
   void parameterChanged();
-  juce::AudioParameterFloat* minimumDelayParam;
-  juce::AudioParameterFloat* sweepWidthParam;
-  juce::AudioParameterFloat* depthParam;
-  juce::AudioParameterFloat* feedbackParam;
   juce::AudioParameterFloat* lfoFrequencyParam;
   juce::AudioParameterChoice* lfoTypeParam;
   juce::AudioParameterChoice* interpolationTypeParam;
+  juce::AudioParameterFloat* sweepWidthParam;
+  juce::AudioParameterFloat* minimumDelayParam;
+  juce::AudioParameterFloat* depthParam;
+  juce::AudioParameterFloat* feedbackParam;
   juce::AudioParameterBool* stereoParam;
-  int CCount = 0;
   float lfoPhase = 0;             // Phase of the low-frequency oscillator
-  double inverseSampleRate;   // Cache inverse of sample rate (more efficient to multiply than divide)
+  float interpolatedSample;  // For fractional delay
 
   // Circular buffer variables for implementing delay
   juce::AudioSampleBuffer delayBuffer;
@@ -79,5 +78,4 @@ private:
   int delayReadPosition; //do i use this?
   int delayWritePosition = 0;
 
-  float inputPhase = 0, phase = 0;
  };

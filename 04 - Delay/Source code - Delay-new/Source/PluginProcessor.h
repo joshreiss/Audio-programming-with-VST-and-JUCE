@@ -61,9 +61,8 @@ private:
   juce::AudioParameterFloat* delayTimeParam;
   juce::AudioParameterFloat* feedbackParam;
   juce::AudioParameterFloat* dryWetMixParam;
-
   // Circular buffer variables for implementing delay
   juce::AudioSampleBuffer delayBuffer;
   int delayBufferLength;
-  int delayReadPosition, delayWritePosition = 0;
+  int delayReadPosition = 0, delayWritePosition = 0;
  };

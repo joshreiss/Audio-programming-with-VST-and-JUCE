@@ -61,6 +61,6 @@ private:
   juce::AudioParameterFloat* gainParam;
   juce::AudioParameterFloat* centreFrequencyParam;
   juce::AudioParameterFloat* qParam;
-  float x1 = 0, x2 = 0, y1 = 0.0f, y2 = 0.0f;
-  float inputPhase = 0;             // Phase of the sinusoid, range 0 to 1
+  juce::OwnedArray<juce::IIRFilter> filters;
+  //void updateFilters(float cornerFrequency, float qualityFactor, float gain);
  };

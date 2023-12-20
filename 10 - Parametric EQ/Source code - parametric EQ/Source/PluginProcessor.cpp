@@ -23,7 +23,7 @@ ParametricEQAudioProcessor::ParametricEQAudioProcessor()
 #endif
 {
   addParameter(centreFrequencyParam = new juce::AudioParameterFloat("centreFrequency", "Centre frequency", 10.0f, 20000.0f, 1000.0f));
-  addParameter(gainParam = new juce::AudioParameterFloat("gain", "Gain", -12.0f, 12.0f, 0.0f));
+  addParameter(gainParam = new juce::AudioParameterFloat("gain", "Gain", -12.0f, 12.0f, 2.0f));
   addParameter(qParam = new juce::AudioParameterFloat("Q", "Q", 0.1f, 20.0f, 2.0f));
 }
 
@@ -96,8 +96,11 @@ void ParametricEQAudioProcessor::changeProgramName (int index, const juce::Strin
 //==============================================================================
 void ParametricEQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+  filters.clear();
+  for (int i = 0; i < getTotalNumInputChannels(); ++i) {
+    juce::IIRFilter* filter;
+    filters.add(filter = new juce::IIRFilter());
+  }
 }
 
 void ParametricEQAudioProcessor::releaseResources()
@@ -137,6 +140,7 @@ void ParametricEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     juce::ScopedNoDenormals noDenormals;
     auto numOutputChannels = getTotalNumOutputChannels();
     auto numInputChannels = getTotalNumInputChannels();
+    auto numSamples = buffer.getNumSamples();
 
     float gain = gainParam->get();
     float Q = qParam->get();
@@ -145,49 +149,30 @@ void ParametricEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     float normalisedFrequency = juce::MathConstants<float>::twoPi * centreFrequency / sampleRate;
     float linearGain = pow(10.0f, gain / 20.0f);
     
-    // Limit the bandwidth so we don't get a nonsense result from tan(B/2)
-    const float bandwidth = juce::jmin(normalisedFrequency / Q, (float)juce::MathConstants<float>::pi * 0.99f);
+    const float bandwidth = normalisedFrequency / Q;
     const double two_cos_wc = -2.0*cos(normalisedFrequency);
     const double tan_half_bw = tan(bandwidth / 2.0);
     const double g_tan_half_bw = linearGain * tan_half_bw;
     const double sqrt_g = sqrt(linearGain);
         
-    auto filter = new juce::IIRFilter;
-    filter->setCoefficients(juce::IIRCoefficients(sqrt_g + g_tan_half_bw,  // b0
-      sqrt_g * two_cos_wc,     // b1
-      sqrt_g - g_tan_half_bw,  // b2
-      sqrt_g + tan_half_bw,    // a0
-      sqrt_g * two_cos_wc,     // a1
-      sqrt_g - tan_half_bw   // a2
-    ));
+    // setCoefficients takes arguments: b0, b1, b2, a0, a1, a2. Normalises filter according to a0 for time-domain implementations
+    auto coefficients = juce::IIRCoefficients(sqrt_g + g_tan_half_bw, /* b0 */
+      sqrt_g * two_cos_wc, /* b1 */
+      sqrt_g - g_tan_half_bw, /* b2 */
+      sqrt_g + tan_half_bw, /* a0 */
+      sqrt_g * two_cos_wc, /* a1 */
+      sqrt_g - tan_half_bw /* a2 */);
+
+    for (int i = 0; i < filters.size(); i++) filters[i]->setCoefficients(coefficients);
+
+    for (int channel = 0; channel < numInputChannels; ++channel) {
+      float* channelData = buffer.getWritePointer(channel);
+      for (int i = 0; i < numSamples; ++i) channelData[i] = 2.0f * rand() / (float)RAND_MAX - 1.0f;
+      filters[channel]->processSamples(channelData, numSamples);
+      filters[channel]->processSamples(channelData, numSamples);
+    }
 
     for (auto i = numInputChannels; i < numOutputChannels; ++i) buffer.clear (i, 0, buffer.getNumSamples());
-
-    for (int i = 0; i < buffer.getNumSamples(); ++i) buffer.getWritePointer(0)[i] = 2.0f * rand() / (float)RAND_MAX - 1.0f;
-    filter->processSamples(buffer.getWritePointer(0), buffer.getNumSamples());
-
-    /*
-    float coefficients[6] = { sqrt_g + g_tan_half_bw,  // b0
-      sqrt_g * two_cos_wc,     // b1
-      sqrt_g - g_tan_half_bw,  // b2
-      sqrt_g + tan_half_bw,    // a0
-      sqrt_g * two_cos_wc,     // a1
-      sqrt_g - tan_half_bw };  // a2
-
-    for (int i = 0; i < 6; ++i) coefficients[i] /= coefficients[3];
-    for (int i = 0; i < buffer.getNumSamples(); ++i)
-    {
-      float inputSignal = 2.0f * rand() / (float)RAND_MAX - 1.0f;
-      auto in = inputSignal;
-      float out = coefficients[0] * in + coefficients[1] * x1 + coefficients[2] * x - coefficients[4] * y1 - coefficients[5] * y2;
-     x2 = x1;
-      x1 = in;
-      y2 = y1;
-      y1 = out;
-
-      for (int j = 0; j < numInputChannels; ++j) buffer.getWritePointer(j)[i] = out;
-    }
-    */
 }
 
 //==============================================================================

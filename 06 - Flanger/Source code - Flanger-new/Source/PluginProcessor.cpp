@@ -23,14 +23,14 @@ FlangerAudioProcessor::FlangerAudioProcessor()
 #endif
 {
 
-  addParameter(minimumDelayParam = new juce::AudioParameterFloat("minimumDelay", "Minimum delay", { 1.0f, 20.0f, 0.1f }, 2.5f, "ms"));
-  addParameter(sweepWidthParam = new juce::AudioParameterFloat("sweepWidth", "Sweep width", { 1.0f, 20.0f, 0.1f }, 10.0f, "ms"));
-  addParameter(depthParam = new juce::AudioParameterFloat("depth", "Depth", { 0.0f, 100.0f, 1.0f }, 100.0f, "%"));
-  addParameter(feedbackParam = new juce::AudioParameterFloat("feedback", "Feedback", { 0.0f, 50.0f, 1.0f }, 0.0f,"%"));
   addParameter(lfoFrequencyParam = new juce::AudioParameterFloat("lfoFrequency", "LFO frequency", { 0.05f, 2.0f, 0.01f }, 0.2f, "Hz"));
   addParameter(lfoTypeParam = new juce::AudioParameterChoice("lfoType", "LFO Type", { "triangle", "square", "sloped square", "sine" }, 1));
   addParameter(interpolationTypeParam = new juce::AudioParameterChoice("interpolationType", "Interpolation Type",
     { "Nearest neighbour", "Linear", "Quadratic","Cubic" }, 1));
+  addParameter(sweepWidthParam = new juce::AudioParameterFloat("sweepWidth", "Sweep width", { 1.0f, 20.0f, 0.1f }, 10.0f, "ms"));
+  addParameter(minimumDelayParam = new juce::AudioParameterFloat("minimumDelay", "Minimum delay", { 1.0f, 20.0f, 0.1f }, 2.5f, "ms"));
+  addParameter(depthParam = new juce::AudioParameterFloat("depth", "Depth", { 0.0f, 100.0f, 1.0f }, 100.0f, "%"));
+  addParameter(feedbackParam = new juce::AudioParameterFloat("feedback", "Feedback", { 0.0f, 50.0f, 1.0f }, 0.0f,"%"));
   addParameter(stereoParam = new juce::AudioParameterBool("stereo", "Stereo", false));
 }
 
@@ -115,9 +115,6 @@ void FlangerAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBloc
   delayBuffer.setSize(2, delayBufferLength);
   delayBuffer.clear();
   lfoPhase = 0.0f;
-
-  inverseSampleRate = 1.0 / sampleRate;
-  DBG("end prepare to play");
 }
 
 void FlangerAudioProcessor::releaseResources()
@@ -169,79 +166,46 @@ void FlangerAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
   auto sweepWidth = sweepWidthParam->get();
   auto lfoType = lfoTypeParam->getIndex();
   auto interpolationType = interpolationTypeParam->getIndex();
+  auto stereo = stereoParam->get();
 
   // working variables
-  int dpw = delayWritePosition;   // delay write position (integer)
-  float dpr;                      // delay read position (real-valued)
   float currentDelay;
+  float channelLfoPhase = lfoPhase;
 
-  float ph = lfoPhase;
-  float channel0EndPhase = lfoPhase;
+   // Iterate over each (multichannel) audio sample in the block.
+  for (int i = 0; i < numSamples; ++i) {
+    // Iterate over each input audio channel. We apply identical effects to each channel.
+    for (int channel = 0; channel < numInputChannels; ++channel) {
+      const float in = buffer.getWritePointer(channel)[i];
+      // delayData is the circular buffer for implementing delay on this channel
+      float* delayData = delayBuffer.getWritePointer(channel);
 
-  // Iterate over each input audio channel. Here, we apply identical effects to each
-  // channel, but for some effects you might do something different for each channel.
-  int channel;
+      channelLfoPhase = lfoPhase;
+      // For stereo flanging, keep the channels 90 degrees out of phase with each other
+      if (stereo && channel != 0) channelLfoPhase = fmodf(lfoPhase + 0.25f, 1.0f);
 
-  for (channel = 0; channel < numInputChannels; ++channel)
-  {
-    // channelData is an array of length numSamples which contains the audio for one channel
-    float* channelData = buffer.getWritePointer(channel);
-
-    // delayData is the circular buffer for implementing delay on this channel
-    float* delayData = delayBuffer.getWritePointer(juce::jmin(channel, delayBuffer.getNumChannels() - 1));
-
-    // Make temporary copy of state variables that need to be maintained between calls to processBlock(),
-    // so that processing one channel can't affect state variable for next channel.
-    dpw = delayWritePosition;
-    ph = lfoPhase;
-
-    // For stereo flanging, keep the channels 90 degrees out of phase with each other
-    if (stereoParam->get() && channel != 0) ph = fmodf(ph + 0.25f, 1.0f);
-
-    for (int i = 0; i < numSamples; ++i)
-    {
-      //const float in = channelData[i];
-      float in = sinf(juce::MathConstants<float>::twoPi * inputPhase);
-      // Update input phase
-      if (channel == 0) {
-        inputPhase += 1000 / sampleRate;
-        while (inputPhase >= 1.0) inputPhase -= 1.0;
-      }
-      float interpolatedSample = 0.0;
-
-      // Recalculate the read pointer position with respect to the write pointer. A more efficient
-      // implementation might increment the read pointer based on the derivative of the LFO without
-      // running the whole equation again, but this format makes the operation clearer.
-      float lfoSample = getLfoSample(ph, lfoType);
+      // Recalculate the read pointer position with respect to the write pointer.
+      float lfoSample = getLfoSample(channelLfoPhase, lfoType);
       currentDelay = 0.001f * (minimumDelay + lfoSample * sweepWidth);
-      dpr = fmodf(float(dpw) - float(currentDelay * getSampleRate()) + float(delayBufferLength), float(delayBufferLength));
+      delayReadPosition = fmodf(float(delayWritePosition) - float(currentDelay * sampleRate) + float(delayBufferLength), float(delayBufferLength));
 
       // In this example, output is input plus delay buffer contents (weighted by delayMix).
       // Last term implements tremolo (variable amplitude) on the whole thing.
-      interpolatedSample = interpolateSample(interpolationType, dpr, delayData, delayBufferLength);
+      interpolatedSample = interpolateSample(interpolationType, delayReadPosition, delayData, delayBufferLength);
       // Store current information in delay buffer. With feedback, what we read is included
       // in what gets stored in buffer, otherwise it's just simple delayed input signal.
-      delayData[dpw] = in + (interpolatedSample * feedback);
-
-      // Increment write pointer at constant rate. Read pointer's rates depends on LFO settings, delay and sweep width.
-      if (++dpw >= delayBufferLength) dpw = 0;
+      delayData[delayWritePosition] = in + (interpolatedSample * feedback);
 
       // Store the output sample in the buffer, replacing the input
-      channelData[i] = in + depth * interpolatedSample;
-
-      // Update the LFO phase, keeping it in the range 0-1
-      ph += float(lfoFrequency * inverseSampleRate);
-      while (ph >= 1.0f) ph -= 1.0f;
+      buffer.getWritePointer(channel)[i] = in + depth * interpolatedSample;
     }
-    // Use channel 0 only to keep the phase in sync between calls to processBlock()
-    // Otherwise quadrature phase on multiple channels will create problems.
-    if (channel == 0) channel0EndPhase = ph;
-  }
+    // Increment write pointer at constant rate. Read pointer rate depends on LFO settings, delay and sweep width.
+    if (++delayWritePosition >= delayBufferLength) delayWritePosition = 0;
 
-  // Having made a local copy of the state variables for each channel, now transfer the result
-  // back to the main state variable so they will be preserved for the next call of processBlock()
-  delayWritePosition = dpw;
-  lfoPhase = channel0EndPhase;
+    // Update the LFO phase, keeping it in the range 0-1
+    lfoPhase += float(lfoFrequency / sampleRate);
+    while (lfoPhase >= 1.0f) lfoPhase -= 1.0f;
+  }
 
   // Clear any output channels that didn't contain input data. They may contain garbage.
   for (int i = numInputChannels; i < numOutputChannels; ++i) buffer.clear(i, 0, buffer.getNumSamples());
