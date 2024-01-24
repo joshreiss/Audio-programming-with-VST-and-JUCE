@@ -61,10 +61,11 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
-  <FILTER uid="8" x="0.4909090909090909" y="0.4022988505747127" useARA="0">
+  <FILTER uid="8" x="0.4909090909090909" y="0.4022988505747127" useARA="0"
+          uiLastX_Normal="28" uiLastY_Normal="262" uiopen_Normal="0">
     <PLUGIN name="Tester" format="VST3" category="Fx" manufacturer="yourcompany"
             version="1.0.0" file="C:\Users\justj\JUCE\MYCODE\Audio-programming-with-VST-and-JUCE\Tester.vst3"
-            uniqueId="f995e4ea" isInstrument="0" fileTime="18ba8ee0409" infoUpdateTime="18c0245ec05"
+            uniqueId="f995e4ea" isInstrument="0" fileTime="18ba8ee0409" infoUpdateTime="18d1be1adf6"
             numInputs="2" numOutputs="2" isShell="0" hasARAExtension="0"
             uid="e9567f7c"/>
     <STATE>191.VMjLgXK....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9XCLt3hKt3hKt3hKt3hYRUUSTEETIckVwTjQisVTTgkdEYjKAQjYPQSPWgUdMcjKAQjct3hdA4hKt3hKt3hKtnTUv.UQAslXuk0UXoWUFE0YQcEV77RRC8Vav8lak4Fc9vyKVMEUy.Ea0cVZtMEcgQWY9..</STATE>
@@ -77,4 +78,25 @@
       </OUTPUTS>
     </LAYOUT>
   </FILTER>
+  <FILTER uid="9" x="0.7" y="0.8467432950191571" useARA="0" uiLastX_Normal="610"
+          uiLastY_Normal="134" uiopen_Normal="0">
+    <PLUGIN name="BigRedRecorder" format="VST3" category="Fx" manufacturer="mwicat"
+            version="0.2.0" file="C:\Users\justj\JUCE\MYCODE\Audio-programming-with-VST-and-JUCE\BigRedRecorder.vst3"
+            uniqueId="99dbee" isInstrument="0" fileTime="18d1bd29b2b" infoUpdateTime="18d1be1adf7"
+            numInputs="2" numOutputs="2" isShell="0" hasARAExtension="0"
+            uid="e959bc06"/>
+    <STATE>318.VMjLgTS....O+fWarAhckI2bo8la8HRLt.iHfTlai8FYo41Y8HRUTYTK3HxO9.BOVMEUy.Ea0cVZtMEcgQWY9vSRC8Vav8lak4Fc9DSMz3hUMoFSmQUQt3hKt7zJlcUXxEDZisVRxH1a3vVX3fjTLQmKogjYTwVXogiQY8FMwjENHIUUTkEUKMCR38TNtHzSBsVLYIUUFkkTUECV0kzQYsVRGgDLqESUuEkQi4FLogDdTMDSn4hTi81YTk0aiYjV5ASZHcGRS0DZ2f1St3hKt3hKt3hKt3hKJUELPUTPqI1aYcEV5UkQQcVTWgkKDAkKBs1QhcVSxHlKDAkKC4BTG4hKt3hKt3hKt3FUUMTUDQEdqw1XmE0UYQTQFM1YAwyKIMzasA2atUlaz4COuX0TTMCTrU2Yo41TzEFck4C.</STATE>
+    <LAYOUT>
+      <INPUTS>
+        <BUS index="0" layout="L R"/>
+      </INPUTS>
+      <OUTPUTS>
+        <BUS index="0" layout="L R"/>
+      </OUTPUTS>
+    </LAYOUT>
+  </FILTER>
+  <CONNECTION srcFilter="8" srcChannel="0" dstFilter="3" dstChannel="0"/>
+  <CONNECTION srcFilter="8" srcChannel="1" dstFilter="3" dstChannel="1"/>
+  <CONNECTION srcFilter="8" srcChannel="0" dstFilter="9" dstChannel="0"/>
+  <CONNECTION srcFilter="8" srcChannel="1" dstFilter="9" dstChannel="1"/>
 </FILTERGRAPH>

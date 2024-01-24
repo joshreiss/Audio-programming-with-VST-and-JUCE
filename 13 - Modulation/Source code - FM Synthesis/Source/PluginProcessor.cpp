@@ -190,28 +190,3 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new FMSynthesisAudioProcessor();
 }
-
-
-// Function for calculating "biased" LFO waveforms with output range [0, 1].
-// Phase range [0, 1], output also [0, 1] (not [-1, +1] as for the ordinary Sine function).
-float FMSynthesisAudioProcessor::getLFOSample(float phase, int waveform)
-{
-  switch (waveform)
-  {
-  case 0: //Triangle:
-    if (phase < 0.25f) return 0.5f + 2.0f * phase;
-    else if (phase < 0.75f) return 1.0f - 2.0f * (phase - 0.25f);
-    else return 2.0f * (phase - 0.75f);
-  case 1: //Square:
-    if (phase < 0.5f) return 1.0f;
-    else return 0.0f;
-  case 2: //SquareSlopedEdges:
-    if (phase < 0.48f) return 1.0f;
-    else if (phase < 0.5f) return 1.0f - 50.0f * (phase - 0.48f);
-    else if (phase < 0.98f) return 0.0f;
-    else return 50.0f * (phase - 0.98f);
-  case 3: //Sine:
-  default:
-    return 0.5f + 0.5f * sinf(juce::MathConstants<float>::twoPi * phase);
-  }
-}

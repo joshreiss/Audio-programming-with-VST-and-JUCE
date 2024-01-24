@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="NTe0XB0ij" name="Plugin Host" projectType="guiapp" version="1.2.0"
+              juceFolder="../../../juce" vstFolderMac="~/SDKs/vstsdk2.4" vstFolderPC="c:\SDKs\vstsdk2.4"
+              bundleIdentifier="com.roli.pluginhost" companyName="ROLI Ltd."
+              includeBinaryInAppConfig="1" displaySplashScreen="1" reportAppUsage="1"
+              splashScreenColour="Dark" jucerFormatVersion="1">
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" vstFolder="" rtasFolder="~/SDKs/PT_80_SDK"
+               objCExtraSuffix="M73TRi" vst3Folder="" extraCompilerFlags="-Wall -Wshadow -Wstrict-aliasing -Wconversion -Wsign-compare -Woverloaded-virtual -Wextra-semi">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Plugin Host"
+                       osxSDK="default" osxCompatibility="default"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="Plugin Host"
+                       osxSDK="default" osxCompatibility="default"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../modules"/>
+        <MODULEPATH id="juce_opengl" path="../../modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../modules"/>
+        <MODULEPATH id="juce_graphics" path="../../modules"/>
+        <MODULEPATH id="juce_events" path="../../modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../modules"/>
+        <MODULEPATH id="juce_core" path="../../modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile" vstFolder="" vst3Folder="">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" isDebug="1" optimisation="1" targetName="Plugin Host"
+                       libraryPath="/usr/X11R6/lib/"/>
+        <CONFIGURATION name="Release" isDebug="0" optimisation="2" targetName="Plugin Host"
+                       libraryPath="/usr/X11R6/lib/"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../modules"/>
+        <MODULEPATH id="juce_opengl" path="../../modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../modules"/>
+        <MODULEPATH id="juce_graphics" path="../../modules"/>
+        <MODULEPATH id="juce_events" path="../../modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../modules"/>
+        <MODULEPATH id="juce_core" path="../../modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+    <VS2017 targetFolder="Builds/VisualStudio2017" vst3Folder="">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="1" optimisation="1" targetName="Plugin Host"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="x64"
+                       isDebug="0" optimisation="3" targetName="Plugin Host"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video" path="../../modules"/>
+        <MODULEPATH id="juce_opengl" path="../../modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../modules"/>
+        <MODULEPATH id="juce_graphics" path="../../modules"/>
+        <MODULEPATH id="juce_events" path="../../modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../modules"/>
+        <MODULEPATH id="juce_core" path="../../modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../modules"/>
+      </MODULEPATHS>
+    </VS2017>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../modules"/>
+        <MODULEPATH id="juce_core" path="../../modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../modules"/>
+        <MODULEPATH id="juce_events" path="../../modules"/>
+        <MODULEPATH id="juce_graphics" path="../../modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../modules"/>
+        <MODULEPATH id="juce_opengl" path="../../modules"/>
+        <MODULEPATH id="juce_video" path="../../modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <MAINGROUP id="YdWL7hi7p" name="Plugin Host">
+    <FILE id="RKNVNK" name="PluginSharedData.cpp" compile="1" resource="0"
+          file="Source/PluginSharedData.cpp"/>
+    <FILE id="c2fCit" name="ThumbnailComp.h" compile="0" resource="0" file="Source/ThumbnailComp.h"/>
+    <FILE id="TwAKut" name="PluginSharedData.h" compile="0" resource="0"
+          file="Source/PluginSharedData.h"/>
+    <FILE id="EM67Oj" name="AudioLiveScrollingDisplay.h" compile="0" resource="0"
+          file="Source/AudioLiveScrollingDisplay.h"/>
+    <FILE id="Xt2GQv" name="TransportState.h" compile="0" resource="0"
+          file="Source/TransportState.h"/>
+    <FILE id="VuMF9k" name="AudioPlayerEditor.cpp" compile="1" resource="0"
+          file="Source/AudioPlayerEditor.cpp"/>
+    <FILE id="bhGa7d" name="AudioPlayerEditor.h" compile="0" resource="0"
+          file="Source/AudioPlayerEditor.h"/>
+    <FILE id="v5YQRF" name="AudioPlayerPlugin.cpp" compile="1" resource="0"
+          file="Source/AudioPlayerPlugin.cpp"/>
+    <FILE id="L2YMtv" name="AudioPlayerPlugin.h" compile="0" resource="0"
+          file="Source/AudioPlayerPlugin.h"/>
+    <FILE id="hoVGnt" name="AudioSlaveRecorderPlugin.h" compile="0" resource="0"
+          file="Source/AudioSlaveRecorderPlugin.h"/>
+    <FILE id="A7E5gI" name="AudioSlaveRecoderPlugin.cpp" compile="1" resource="0"
+          file="Source/AudioSlaveRecoderPlugin.cpp"/>
+    <FILE id="8tLeuntR4" name="FilterGraph.cpp" compile="1" resource="0"
+          file="Source/FilterGraph.cpp"/>
+    <FILE id="auGSxnlTU" name="FilterGraph.h" compile="0" resource="0"
+          file="Source/FilterGraph.h"/>
+    <FILE id="cnfPX5" name="FilterIOConfiguration.cpp" compile="1" resource="0"
+          file="Source/FilterIOConfiguration.cpp"/>
+    <FILE id="ZVUq7Q" name="FilterIOConfiguration.h" compile="0" resource="0"
+          file="Source/FilterIOConfiguration.h"/>
+    <FILE id="2b09bSUt" name="GraphEditorPanel.cpp" compile="1" resource="0"
+          file="Source/GraphEditorPanel.cpp"/>
+    <FILE id="sj8Yug8cu" name="GraphEditorPanel.h" compile="0" resource="0"
+          file="Source/GraphEditorPanel.h"/>
+    <FILE id="nehnGjkrX" name="HostStartup.cpp" compile="1" resource="0"
+          file="Source/HostStartup.cpp"/>
+    <FILE id="J6HWWSQP1" name="InternalFilters.cpp" compile="1" resource="0"
+          file="Source/InternalFilters.cpp"/>
+    <FILE id="AplCcJ0La" name="InternalFilters.h" compile="0" resource="0"
+          file="Source/InternalFilters.h"/>
+    <FILE id="mFVSjbHfN" name="MainHostWindow.cpp" compile="1" resource="0"
+          file="Source/MainHostWindow.cpp"/>
+    <FILE id="h1kpxyzHi" name="MainHostWindow.h" compile="0" resource="0"
+          file="Source/MainHostWindow.h"/>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_WASAPI="1" JUCE_DIRECTSOUND="1" JUCE_ALSA="1" JUCE_QUICKTIME="disabled"
+               JUCE_USE_FLAC="0" JUCE_USE_OGGVORBIS="0" JUCE_USE_CDBURNER="0"
+               JUCE_USE_CDREADER="0" JUCE_USE_CAMERA="0" JUCE_PLUGINHOST_VST="1"
+               JUCE_PLUGINHOST_AU="1" JUCE_WEB_BROWSER="0" JUCE_PLUGINHOST_VST3="1"/>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useGlobalPath="1"/>
+    <MODULE id="juce_video" showAllCode="1" useGlobalPath="1"/>
+  </MODULES>
+</JUCERPROJECT>

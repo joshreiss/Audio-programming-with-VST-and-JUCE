@@ -106,6 +106,7 @@ void DelayAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 
   // Since delayTime is in seconds, use sample rate to find out what delay position offset should be
   delayReadPosition = (int)(delayWritePosition - (delayTime * getSampleRate()) + delayBufferLength) % delayBufferLength;
+
 }
 
 void DelayAudioProcessor::releaseResources()
@@ -161,6 +162,7 @@ void DelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::M
     // Go through each channel of audio that's passed in. We apply identical effects to each channel.
     // For some effects, like stereo chorus or panner, you might do something different for each channel.
     for (int j = 0; j < numInputChannels; ++j) {
+
       // get the current input value for this channel, this sample
       const float in = buffer.getWritePointer(j)[i];
 

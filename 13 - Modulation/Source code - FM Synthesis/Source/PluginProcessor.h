@@ -65,6 +65,4 @@ private:
   float modulatedCarrierPhase = 0;    // Phase of the carrier, with modulation, range 0 to 1
   float modulatorSignal;
   float modulatedCarrierSignal;
-
-  float getLFOSample(float phase, int waveform);
 };

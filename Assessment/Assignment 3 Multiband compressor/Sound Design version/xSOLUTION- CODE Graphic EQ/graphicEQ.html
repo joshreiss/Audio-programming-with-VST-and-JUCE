@@ -1,0 +1,20 @@
+<button onclick="context.resume()">Start</button>
+<p>Lows</p>
+<input type="range" min=-40 max=0 step=0.01 id="Lows">
+<p>Mid Lows</p>
+<input type="range" min=-40 max=0 step=0.01 id="Midlows">
+<p>Mids</p>
+<input type="range" min=-40 max=0 step=0.01 id="Mids">
+<p>Mid Highs</p>
+<input type="range" min=-40 max=0 step=0.01 id="Midhighs">
+<p>Highs</p>
+<input type="range" min=-40 max=0 step=0.01 id="Highs">
+<span id="FilterLabel"></span>
+<br>
+<button onclick="Start()">Record</button>
+<button onclick="Stop()">Stop</button>
+<br>
+<audio controls></audio>
+<script src="recorder.js"></script>
+<script src="recording.js"></script>
+<script src="graphicEQ.js"></script>
