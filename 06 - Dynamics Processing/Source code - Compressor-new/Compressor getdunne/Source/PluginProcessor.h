@@ -13,15 +13,15 @@
 //==============================================================================
 /**
 */
-class MidiInputAudioProcessor  : public juce::AudioProcessor
+class CompressorAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
     //==============================================================================
-    MidiInputAudioProcessor();
-    ~MidiInputAudioProcessor() override;
+    CompressorAudioProcessor();
+    ~CompressorAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -56,11 +56,13 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    float gainParam;
-
-    juce::MidiKeyboardState keyboardState;
-
 private:
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiInputAudioProcessor)
-};
+  juce::AudioParameterFloat* thresholdParam;
+  juce::AudioParameterFloat* ratioParam;
+  juce::AudioParameterFloat* attackTimeParam;
+  juce::AudioParameterFloat* releaseTimeParam;
+  juce::AudioParameterFloat* makeUpGainParam;
+  float x_g, y_g, x_l, y_l, yL_prev, c, alphaAttack, alphaRelease;
+  float inputPhase = 0;             // Phase of the sinusoid, range 0 to 1
+ };

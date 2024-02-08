@@ -9,19 +9,20 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "Compressor.h" //1
 
 //==============================================================================
 /**
 */
-class MidiInputAudioProcessor  : public juce::AudioProcessor
+class CompressorAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
     //==============================================================================
-    MidiInputAudioProcessor();
-    ~MidiInputAudioProcessor() override;
+    CompressorAudioProcessor();
+    ~CompressorAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -56,11 +57,12 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    float gainParam;
-
-    juce::MidiKeyboardState keyboardState;
-
 private:
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiInputAudioProcessor)
+  juce::Array<Compressor> allCompressors;
+  juce::AudioProcessorValueTreeState state;
+
+  std::atomic<float> *threshParam, * slopeParam, * kneeParam, * attackParam, * releaseParam;
+
+   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompressorAudioProcessor)
 };

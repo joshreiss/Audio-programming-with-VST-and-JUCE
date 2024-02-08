@@ -13,15 +13,15 @@
 //==============================================================================
 /**
 */
-class MidiInputAudioProcessor  : public juce::AudioProcessor
+class ParametricEQAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
     //==============================================================================
-    MidiInputAudioProcessor();
-    ~MidiInputAudioProcessor() override;
+    ParametricEQAudioProcessor();
+    ~ParametricEQAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -56,11 +56,18 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    float gainParam;
-
-    juce::MidiKeyboardState keyboardState;
-
 private:
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiInputAudioProcessor)
-};
+  juce::AudioParameterFloat* lowGainParam;
+  juce::AudioParameterFloat* lowFrequencyParam;
+  juce::AudioParameterFloat* lowQParam;
+  juce::AudioParameterFloat* midGainParam;
+  juce::AudioParameterFloat* midFrequencyParam;
+  juce::AudioParameterFloat* midQParam;
+  juce::AudioParameterFloat* highGainParam;
+  juce::AudioParameterFloat* highFrequencyParam;
+  juce::AudioParameterFloat* highQParam;
+  juce::OwnedArray<juce::IIRFilter> lowFilters;
+  juce::OwnedArray<juce::IIRFilter> midFilters;
+  juce::OwnedArray<juce::IIRFilter> highFilters;
+ };

@@ -13,15 +13,15 @@
 //==============================================================================
 /**
 */
-class MidiInputAudioProcessor  : public juce::AudioProcessor
+class CompressExpandAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
     //==============================================================================
-    MidiInputAudioProcessor();
-    ~MidiInputAudioProcessor() override;
+    CompressExpandAudioProcessor();
+    ~CompressExpandAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -56,11 +56,22 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-    float gainParam;
-
-    juce::MidiKeyboardState keyboardState;
-
 private:
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MidiInputAudioProcessor)
-};
+  juce::AudioParameterFloat* thresholdParam;
+  juce::AudioParameterFloat* ratioParam;
+  juce::AudioParameterFloat* attackTimeParam;
+  juce::AudioParameterFloat* releaseTimeParam;
+  juce::AudioParameterFloat* makeUpGainParam;
+  juce::AudioParameterBool* bypassParam;
+  juce::AudioParameterChoice* modeParam;
+
+  juce::AudioSampleBuffer mixedDownInput;
+  float x_g, y_g, x_l, y_l, y_l_prev, control, alphaAttack, alphaRelease;
+
+  float inputLevel;
+  float inverseSampleRate;
+  float inverseE;
+  float calculateAttackOrRelease(float value);
+  float inputPhase = 0;             // Phase of the sinusoid, range 0 to 1
+ };

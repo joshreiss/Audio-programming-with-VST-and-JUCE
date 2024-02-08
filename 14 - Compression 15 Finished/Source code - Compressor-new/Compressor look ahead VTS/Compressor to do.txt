@@ -1,3 +1,0 @@
-Simplify by using generic UI, maybe no knee
-
-Keep lookahead?

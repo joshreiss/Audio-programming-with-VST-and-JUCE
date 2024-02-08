@@ -138,7 +138,7 @@ void HelloWorld_v2AudioProcessor::processBlock (juce::AudioBuffer<float>& buffer
     auto* channelData = buffer.getWritePointer(channel);
     for (int sample = 0; sample < buffer.getNumSamples(); sample++)
     {
-      channelData[sample] = 2.0 * gainValue * ((double)rand() / RAND_MAX) - 1.0;
+      channelData[sample] = gainValue* (2.0 * ((double)rand() / RAND_MAX) - 1.0);
     }
   }
 }
