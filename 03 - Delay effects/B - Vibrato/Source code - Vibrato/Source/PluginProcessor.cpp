@@ -24,9 +24,9 @@ VibratoAudioProcessor::VibratoAudioProcessor()
 {
   addParameter(lfoFrequencyParam = new juce::AudioParameterFloat("lfoFrequency", "LFO frequency",0.1f,5.0f, 1.0f));
   addParameter(sweepWidthParam = new juce::AudioParameterFloat("sweepWidth", "Sweep width", 0.001f, 0.05f, 0.01f));
-  addParameter(lfoTypeParam = new juce::AudioParameterChoice("lfoType", "LFO Type", { "triangle", "square", "sawtooth", "inverse sawtooth", "sine" }, 1));
+  addParameter(lfoTypeParam = new juce::AudioParameterChoice("lfoType", "LFO Type", { "triangle", "square", "sawtooth", "sine" }, 1));
   addParameter(interpolationTypeParam = new juce::AudioParameterChoice("interpolationType", "Interpolation Type",
-    { "Nearest neighbour", "Linear", "Quadratic","Cubic" }, 1));
+    { "Nearest neighbour", "Linear", "Quadratic" }, 1));
 }
 
 VibratoAudioProcessor::~VibratoAudioProcessor()
@@ -99,7 +99,7 @@ void VibratoAudioProcessor::changeProgramName (int index, const juce::String& ne
 void VibratoAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
   // Allocate and zero the delay buffer (size will depend on current sample rate)
-  // Add 3 extra samples to allow cubic interpolation even at maximum delay
+  // Add extra samples to allow interpolation even at maximum delay
   float sweepWidthMax = sweepWidthParam->getNormalisableRange().end;
   delayBufferLength = (int)(sweepWidthMax * sampleRate) + 3;
   delayBuffer.setSize(2, delayBufferLength);
@@ -164,7 +164,7 @@ void VibratoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     currentDelay = sweepWidth * getLfoSample(lfoPhase, lfoType);
     // Now use that to find read pointer position
     // Subtract 3 samples to delay pointer to make sure we have enough previous samples for interpolation
-    delayReadPosition = fmodf(float(delayWritePosition - (currentDelay * getSampleRate()) + delayBufferLength - 3.0), 
+    delayReadPosition = fmodf(float(delayWritePosition - (currentDelay * getSampleRate()) + delayBufferLength - 3.0),
                               float(delayBufferLength));
 
     // Iterate over each input audio channel. We apply identical effects to each channel.
@@ -172,11 +172,11 @@ void VibratoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
       const float in = buffer.getWritePointer(j)[i];
       // delayData is the circular buffer for implementing delay on this channel
       float* delayData = delayBuffer.getWritePointer(j);
-      
+
       // implement fractional delay
       interpolatedSample = interpolateSample(interpolationType, delayReadPosition, delayData, delayBufferLength);
 
-      // Store the current information in the delay buffer. With feedback, what we read is included in what 
+      // Store the current information in the delay buffer. With feedback, what we read is included in what
       // gets stored in the buffer, otherwise it's just a simple delay line of the input signal.
       delayData[delayWritePosition] = in;
 
@@ -191,7 +191,7 @@ void VibratoAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce
     lfoPhase += float(lfoFrequency / sampleRate);
     while (lfoPhase >= 1.0f) lfoPhase -= 1.0f;
   }
-  
+
   // Clear any output channels that didn't contain input data. They may contain garbage.
   for (int i = numInputChannels; i < numOutputChannels; ++i) buffer.clear(i, 0, buffer.getNumSamples());
 }
@@ -228,28 +228,16 @@ float VibratoAudioProcessor::getLfoSample(float phase, int waveform)
     switch (waveform)
     {
     case 0://Triangle:
-        if (phase < 0.25f)
-            return 0.5f + 2.0f*phase;
-        else if (phase < 0.75f)
-            return 1.0f - 2.0f*(phase - 0.25f);
-        else
-            return 2.0f*(phase - 0.75f);
-    case 1://square
-      if (phase < 0.5f)
-        return 1.0f;
-      else
-        return 0.0f;
+      if (phase < 0.25f) return 0.5f + 2.0f*phase;               // .5 to 1
+      else if (phase < 0.75f) return 1.0f - 2.0f*(phase - 0.25f);// 1 to 0
+      else return 2.0f*(phase - 0.75f);                          // 0 to .5
+    case 1://Square
+      if (phase < 0.5f) return 1.0f;
+      else return 0.0f;
     case 2://Sawtooth:
-        if (phase < 0.5f)
-            return 0.5f + phase;
-        else
-            return phase - 0.5f;
-    case 3://InverseSawtooth:
-        if (phase < 0.5f)
-            return 0.5f - phase;
-        else
-            return 1.5f - phase;
-    case 4://Sine:
+      if (phase < 0.5f) return 0.5f + phase;// .5 to 1
+      else return phase - 0.5f;             // 0 to .5
+    case 3://Sine:
     default:
         return 0.5f + 0.5f*sinf(juce::MathConstants<float>::twoPi * phase);
     }
@@ -290,73 +278,7 @@ float VibratoAudioProcessor::interpolateSample(int type, float delayReadPosition
            - 2 * (fraction - 1) * (fraction + 1) * delayData[sample1]
            + fraction * (fraction + 1) * delayData[sample2]) / 2.0f;
     }
-    case 3: // Cubic:
-    {
-      // Cubic interpolation will produce cleaner results at expense of more computation. 
-      // This code uses the Catmull-Rom variant of cubic interpolation. To reduce the load, 
-      // calculate some quantities in advance that will be used several times in the equation:
-      int sample1 = (int)floorf(delayReadPosition);
-      int sample2 = (sample1 + 1) % delayBufferLength;
-      int sample3 = (sample2 + 1) % delayBufferLength;
-      int sample0 = (sample1 - 1 + delayBufferLength) % delayBufferLength;
-
-      float fraction = delayReadPosition - floorf(delayReadPosition);
-      float frsq = fraction * fraction;
-
-      float a0 = -0.5f * delayData[sample0] + 1.5f * delayData[sample1]
-        - 1.5f * delayData[sample2] + 0.5f * delayData[sample3];
-      float a1 = delayData[sample0] - 2.5f * delayData[sample1]
-        + 2.0f * delayData[sample2] - 0.5f * delayData[sample3];
-      float a2 = -0.5f * delayData[sample0] + 0.5f * delayData[sample2];
-      float a3 = delayData[sample1];
-
-      return a0 * fraction * frsq + a1 * frsq + a2 * fraction + a3;
-    }
-    default:
-      // This line would only be reached if the type argument is invalid
-      return 0.0f;
   }
-}
-// Called whenever LFO waveform, LFO frequency, or sweep width parameters are changed.
-void VibratoAudioProcessor::parameterChanged()
-{
-  // The amount of pitch shift depends on the derivative of the delay, which
-  // is given by: delay = width * f(frequency * t)
-  // where f(x) is one of:
-  //   sine --> 0.5 + 0.5*sin(2*pi*x) --> derivative pi*cos(x)*dx
-  //   triangle --> {2.0*x or 1.0-(2.0*(x-0.5)) ---> derivative +/- 2.0*dx
-  //   sawtooth rising --> x --> derivative 1.0*dx
-  //   sawtooth falling --> 1.0 - x --> derivative -1.0*dx
-  // For f(frequency*t), "dx" = frequency
-
-  float maxSpeed = 1.0, minSpeed = 1.0;
-  float maxPitch = 0.0, minPitch = 0.0;
-
-  float lfoFreqTimesSweep = lfoFrequencyParam->get() * sweepWidthParam->get();
-  const float FLT_PI = 3.1415926f;
-  switch (lfoTypeParam->getIndex())
-  {
-  case 0: //Sine:
-    maxSpeed = 1.0f + FLT_PI * lfoFreqTimesSweep;
-    minSpeed = 1.0f - FLT_PI * lfoFreqTimesSweep;
-    break;
-  case 1: //Triangle:
-    maxSpeed = 1.0f + 2.0f * lfoFreqTimesSweep;
-    minSpeed = 1.0f - 2.0f * lfoFreqTimesSweep;
-    break;
-  case 2: //Sawtooth:
-    // Standard (rising) sawtooth means delay is increasing --> pitch is lower
-    maxSpeed = 1.0f;
-    minSpeed = 1.0f - lfoFreqTimesSweep;
-    break;
-  case 3: //InverseSawtooth:
-    // Inverse (falling) sawtooth means delay is decreasing --> pitch is higher
-    maxSpeed = 1.0f + lfoFreqTimesSweep;
-    minSpeed = 1.0f;
-    break;
-  }
-  // Convert speed to pitch shift --> semitones = 12*log2(speed)
-  maxPitch = 12.0f * logf(maxSpeed) / logf(2.0f);
 }
 
 //==============================================================================

@@ -23,7 +23,7 @@ Feedback: 0.5
 LFO Frequency: 0.8
 Stereo: Off
 LFO Waveform: Sine
-Interpolation: Cubic
+Interpolation: Quadratic
 
 flanger_ex3 (stereo, using chorus_original for comparison to chorus)
 -----------
@@ -34,4 +34,4 @@ Feedback: 0.0
 LFO Frequency: 0.2
 Stereo: On
 LFO Waveform: Sine
-Interpolation: Cubic
+Interpolation: Quadratic

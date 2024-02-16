@@ -14,9 +14,6 @@ ArpeggiatorAudioProcessor::ArpeggiatorAudioProcessor()
 #endif
 {
   addParameter(speed = new juce::AudioParameterFloat({ "speed", 1 }, "Arpeggiator Speed", 0.0, 1.0, 0.5));
-
-  // Make sure that before the constructor has finished, you've set the
-  // editor's size to whatever you need it to be.
 }
 
 ArpeggiatorAudioProcessor::~ArpeggiatorAudioProcessor()
@@ -50,7 +47,7 @@ double ArpeggiatorAudioProcessor::getTailLengthSeconds() const
 
 int ArpeggiatorAudioProcessor::getNumPrograms()
 {
-    return 1; 
+    return 1;
 }
 
 int ArpeggiatorAudioProcessor::getCurrentProgram()
@@ -122,7 +119,7 @@ void ArpeggiatorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, 
   // however we use the buffer to get timing information
   auto numSamples = buffer.getNumSamples();
 
-  // get note duration
+  // get note duration, from 0.025 to 0.275
   auto noteDuration = static_cast<int> (std::ceil(rate * 0.25f * (0.1f + (1.0f - (*speed)))));
 
   for (const auto metadata : midi)
@@ -171,7 +168,7 @@ void ArpeggiatorAudioProcessor::getStateInformation (juce::MemoryBlock& destData
   juce::MemoryOutputStream(destData, true).writeFloat(*speed);
 }
 
-void ArpeggiatorAudioProcessor::setStateInformation(const void* data, int sizeInBytes) 
+void ArpeggiatorAudioProcessor::setStateInformation(const void* data, int sizeInBytes)
 {
   speed->setValueNotifyingHost(juce::MemoryInputStream(data, static_cast<size_t> (sizeInBytes), false).readFloat());
 }

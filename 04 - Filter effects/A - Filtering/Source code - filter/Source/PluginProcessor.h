@@ -13,15 +13,15 @@
 //==============================================================================
 /**
 */
-class ParametricEQAudioProcessor  : public juce::AudioProcessor
+class FilterAudioProcessor  : public juce::AudioProcessor
                             #if JucePlugin_Enable_ARA
                              , public juce::AudioProcessorARAExtension
                             #endif
 {
 public:
     //==============================================================================
-    ParametricEQAudioProcessor();
-    ~ParametricEQAudioProcessor() override;
+    FilterAudioProcessor();
+    ~FilterAudioProcessor() override;
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
@@ -62,5 +62,4 @@ private:
   juce::AudioParameterFloat* centreFrequencyParam;
   juce::AudioParameterFloat* qParam;
   juce::OwnedArray<juce::IIRFilter> filters;
-  //void updateFilters(float cornerFrequency, float qualityFactor, float gain);
  };

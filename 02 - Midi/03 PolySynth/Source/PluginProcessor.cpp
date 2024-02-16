@@ -136,17 +136,11 @@ bool PolySynthAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts
 
 void PolySynthAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffer& midiMessages) {
   auto numSamples = buffer.getNumSamples();
-  for (auto i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i) buffer.clear(i, 0, numSamples);
   // Pass incoming midi messages to keyboard state object, adds messages to buffer if user clicking on on-screen keys
   keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
   synth.renderNextBlock(buffer, midiMessages, 0, numSamples); // Synth processes these midi events & generate output
-
-  for (const auto metadata : midiMessages) {
-    auto message = metadata.getMessage();
-    if (message.isNoteOn()) DBG("Note On");
-  }
 }
-  
+
 //==============================================================================
 bool PolySynthAudioProcessor::hasEditor() const
 {

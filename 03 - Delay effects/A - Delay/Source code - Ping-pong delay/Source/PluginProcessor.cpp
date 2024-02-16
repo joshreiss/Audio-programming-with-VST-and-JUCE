@@ -104,9 +104,7 @@ void PingPongDelayAudioProcessor::prepareToPlay (double sampleRate, int samplesP
 
 
     // Allocate and zero the delay buffer (size will depend on current sample rate)
-    // Sanity check the result so we don't end up with any zero-length calculations
   delayBufferLength = (int)(2.0 * sampleRate);
-  if (delayBufferLength < 1) delayBufferLength = 1;
   delayBuffer.setSize(2, delayBufferLength);
   delayBuffer.clear();
 
@@ -170,15 +168,12 @@ void PingPongDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer
   auto rightLeftDelayTime = rightLeftDelayTimeParam->get();
   auto reverseChannels = reverseChannelsParam->get();
 
-  // This shouldn't happen, but we need a sanity check: this effect only makes sense
-  // if there are at least 2 channels to work with (and in this case only 2...)
-  if (buffer.getNumChannels() < 2)
-    return;
+  // This effect only makes sense if there are at least 2 channels to work with
+  if (buffer.getNumChannels() < 2) return;
 
   // If there is one input only, the second channel may not contain anything useful.
   // start with a blank buffer in this case
-  if (numInputChannels < 2)
-    buffer.clear(1, 0, numSamples);
+  if (numInputChannels < 2) buffer.clear(1, 0, numSamples);
 
   // channelDataL and channelDataR are arrays of length numSamples which contain
   // the audio for one channel
@@ -203,7 +198,7 @@ void PingPongDelayAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer
         while (phase >= 1.0) phase -= 1.0;
         if (phase > 0.05) inL = 0;
         if ((phase > 0.35) || (phase < 0.3)) inR = 0;
-            
+
       float outL, outR;
 
       if (reverseChannels)
@@ -271,4 +266,3 @@ juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
     return new PingPongDelayAudioProcessor();
 }
-

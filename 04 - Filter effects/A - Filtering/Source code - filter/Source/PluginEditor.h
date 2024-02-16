@@ -14,11 +14,11 @@
 //==============================================================================
 /**
 */
-class ParametricEQAudioProcessorEditor  : public juce::AudioProcessorEditor
+class FilterAudioProcessorEditor  : public juce::AudioProcessorEditor
 {
 public:
-    ParametricEQAudioProcessorEditor (ParametricEQAudioProcessor&);
-    ~ParametricEQAudioProcessorEditor() override;
+    FilterAudioProcessorEditor (FilterAudioProcessor&);
+    ~FilterAudioProcessorEditor() override;
 
     //==============================================================================
     void paint (juce::Graphics&) override;
@@ -27,7 +27,7 @@ public:
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    ParametricEQAudioProcessor& audioProcessor;
+    FilterAudioProcessor& audioProcessor;
 
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ParametricEQAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterAudioProcessorEditor)
 };

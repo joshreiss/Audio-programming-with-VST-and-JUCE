@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="xYz9jl" name="ParametricEQ" useAppConfig="0" addUsingNamespaceToJuceHeader="0"
+<JUCERPROJECT id="xYz9jl" name="Filter" useAppConfig="0" addUsingNamespaceToJuceHeader="0"
               displaySplashScreen="1" jucerFormatVersion="1" projectType="audioplug"
-              pluginFormats="buildStandalone">
-  <MAINGROUP id="mjePLl" name="ParametricEQ">
+              pluginFormats="buildVST3">
+  <MAINGROUP id="mjePLl" name="Filter">
     <GROUP id="{3C645F5D-A042-5380-E332-09C5DE8D7475}" name="Source">
       <FILE id="bmXkau" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
@@ -18,8 +18,8 @@
   <EXPORTFORMATS>
     <VS2022 targetFolder="Builds/VisualStudio2022">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" targetName="ParametricEQ"/>
-        <CONFIGURATION isDebug="0" name="Release" targetName="ParametricEQ"/>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="Filter"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="Filter"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../../../../../modules"/>

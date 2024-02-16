@@ -1,6 +1,0 @@
-try it on just one channel. Does that work?
-- one channel input & output. Channel loop skips all other channels
-If it works, then probably just error with pointers being updated
-If it doesn't work, then more likely to do with whole routine
-
-Still have problem... when delay is reset to zero, hearing a short delay.

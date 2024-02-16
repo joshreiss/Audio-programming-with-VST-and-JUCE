@@ -30,7 +30,7 @@ ChorusAudioProcessor::ChorusAudioProcessor()
   addParameter(lfoFrequencyParam = new juce::AudioParameterFloat("lfoFrequency", "LFO frequency", { 0.05f, 2.0f, 0.01f }, 0.2f, "Hz"));
   addParameter(lfoTypeParam = new juce::AudioParameterChoice("lfoType", "LFO Type", { "triangle", "square", "sloped square", "sine" }, 1));
   addParameter(interpolationTypeParam = new juce::AudioParameterChoice("interpolationType", "Interpolation Type",
-    { "Nearest neighbour", "Linear", "Quadratic","Cubic" }, 1));
+    { "Nearest neighbour", "Linear", "Quadratic" }, 1));
   addParameter(stereoParam = new juce::AudioParameterBool("stereo", "Stereo", false));
 }
 
@@ -107,7 +107,7 @@ void ChorusAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock
     // initialisation that you need..
 
     // Allocate and zero the delay buffer (size will depend on current sample rate)
-    // Add 3 extra samples to allow cubic interpolation even at maximum delay
+    // Add extra samples to allow interpolation even at maximum delay
   double maxDelaySec = 0.001 * (minimumDelayParam->getNormalisableRange().end + sweepWidthParam->getNormalisableRange().end);
   delayBufferLength = (int)(maxDelaySec * sampleRate) + 3;
   delayBuffer.setSize(2, delayBufferLength);
@@ -204,7 +204,7 @@ void ChorusAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce:
       float phaseOffset = 0.0f;
       float weight;
 
-      // Chorus can have many voices (original, undelayed signal counts as voice). Here, all voices use same LFO, with 
+      // Chorus can have many voices (original, undelayed signal counts as voice). Here, all voices use same LFO, with
       // different phase offsets. It's also possible to use different waveforms and different frequencies for each voice.
 
       for (int j = 0; j < voiceCount - 1; ++j)
@@ -358,29 +358,6 @@ float ChorusAudioProcessor::interpolateSample(int type, float delayReadPosition,
            - 2 * (fraction - 1) * (fraction + 1) * delayData[sample1]
            + fraction * (fraction + 1) * delayData[sample2]) / 2.0f;
 
-    }
-    case 3: // Cubic:
-    {
-      // Cubic interpolation will produce cleaner results at the expense
-      // of more computation. This code uses the Catmull-Rom variant of
-      // cubic interpolation. To reduce the load, calculate a few quantities
-      // in advance that will be used several times in the equation:
-      int sample1 = (int)floorf(delayReadPosition);
-      int sample2 = (sample1 + 1) % delayBufferLength;
-      int sample3 = (sample2 + 1) % delayBufferLength;
-      int sample0 = (sample1 - 1 + delayBufferLength) % delayBufferLength;
-
-      float fraction = delayReadPosition - floorf(delayReadPosition);
-      float frsq = fraction * fraction;
-
-      float a0 = -0.5f * delayData[sample0] + 1.5f * delayData[sample1]
-        - 1.5f * delayData[sample2] + 0.5f * delayData[sample3];
-      float a1 = delayData[sample0] - 2.5f * delayData[sample1]
-        + 2.0f * delayData[sample2] - 0.5f * delayData[sample3];
-      float a2 = -0.5f * delayData[sample0] + 0.5f * delayData[sample2];
-      float a3 = delayData[sample1];
-
-      return a0 * fraction * frsq + a1 * frsq + a2 * fraction + a3;
     }
     default:
       // This line would only be reached if the type argument is invalid

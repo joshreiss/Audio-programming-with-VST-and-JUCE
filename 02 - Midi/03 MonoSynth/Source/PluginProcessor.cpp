@@ -148,13 +148,13 @@ void MonoSynthAudioProcessor::processBlock(AudioBuffer<float>& buffer, MidiBuffe
   for (int i = 0; i < buffer.getNumSamples(); ++i) {
     data[i] = amplitude * std::sin(2.0f * juce::MathConstants<double>::pi * phase);
     phase += frequency / mySampleRate;
-    // fmod(x,y) returns the remainder of x/y. (Neat way of wrapping the phase.)
+    // fmod(x,y) returns remainder of x/y, wrapping the phase.
     phase = (float)fmod(phase, 1.0f);
   }
   for (int i = 1; i < getTotalNumOutputChannels(); ++i)
     buffer.copyFrom(i, 0, buffer.getReadPointer(0), buffer.getNumSamples());
 }
-  
+
 //==============================================================================
 bool MonoSynthAudioProcessor::hasEditor() const
 {

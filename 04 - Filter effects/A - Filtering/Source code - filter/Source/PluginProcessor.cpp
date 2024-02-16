@@ -10,7 +10,7 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-ParametricEQAudioProcessor::ParametricEQAudioProcessor()
+FilterAudioProcessor::FilterAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
      : AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -23,21 +23,21 @@ ParametricEQAudioProcessor::ParametricEQAudioProcessor()
 #endif
 {
   addParameter(centreFrequencyParam = new juce::AudioParameterFloat("centreFrequency", "Centre frequency", 10.0f, 20000.0f, 1000.0f));
-  addParameter(gainParam = new juce::AudioParameterFloat("gain", "Gain", -12.0f, 12.0f, 2.0f));
+  addParameter(gainParam = new juce::AudioParameterFloat("gain", "Gain", -40.0f, 20.0f, 0.0f));
   addParameter(qParam = new juce::AudioParameterFloat("Q", "Q", 0.1f, 20.0f, 2.0f));
 }
 
-ParametricEQAudioProcessor::~ParametricEQAudioProcessor()
+FilterAudioProcessor::~FilterAudioProcessor()
 {
 }
 
 //==============================================================================
-const juce::String ParametricEQAudioProcessor::getName() const
+const juce::String FilterAudioProcessor::getName() const
 {
     return JucePlugin_Name;
 }
 
-bool ParametricEQAudioProcessor::acceptsMidi() const
+bool FilterAudioProcessor::acceptsMidi() const
 {
    #if JucePlugin_WantsMidiInput
     return true;
@@ -46,7 +46,7 @@ bool ParametricEQAudioProcessor::acceptsMidi() const
    #endif
 }
 
-bool ParametricEQAudioProcessor::producesMidi() const
+bool FilterAudioProcessor::producesMidi() const
 {
    #if JucePlugin_ProducesMidiOutput
     return true;
@@ -55,7 +55,7 @@ bool ParametricEQAudioProcessor::producesMidi() const
    #endif
 }
 
-bool ParametricEQAudioProcessor::isMidiEffect() const
+bool FilterAudioProcessor::isMidiEffect() const
 {
    #if JucePlugin_IsMidiEffect
     return true;
@@ -64,67 +64,53 @@ bool ParametricEQAudioProcessor::isMidiEffect() const
    #endif
 }
 
-double ParametricEQAudioProcessor::getTailLengthSeconds() const
+double FilterAudioProcessor::getTailLengthSeconds() const
 {
     return 0.0;
 }
 
-int ParametricEQAudioProcessor::getNumPrograms()
+int FilterAudioProcessor::getNumPrograms()
 {
     return 1;   // NB: some hosts don't cope very well if you tell them there are 0 programs,
                 // so this should be at least 1, even if you're not really implementing programs.
 }
 
-int ParametricEQAudioProcessor::getCurrentProgram()
+int FilterAudioProcessor::getCurrentProgram()
 {
     return 0;
 }
 
-void ParametricEQAudioProcessor::setCurrentProgram (int index)
+void FilterAudioProcessor::setCurrentProgram (int index)
 {
 }
 
-const juce::String ParametricEQAudioProcessor::getProgramName (int index)
+const juce::String FilterAudioProcessor::getProgramName (int index)
 {
     return {};
 }
 
-void ParametricEQAudioProcessor::changeProgramName (int index, const juce::String& newName)
+void FilterAudioProcessor::changeProgramName (int index, const juce::String& newName)
 {
 }
 
 //==============================================================================
-void ParametricEQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
+void FilterAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
   filters.clear();
   for (int i = 0; i < getTotalNumInputChannels(); ++i) {
     juce::IIRFilter* filter;
     filters.add(filter = new juce::IIRFilter());
   }
-  //SEE https://github.com/TheAudioProgrammer/juceIIRFilter
-  /*
-  auto newCoefficients = juce::dsp::IIR::Coefficients<float>::makeNotch(sampleRate, 1000.0, 1.0);
-
-  juce::dsp::ProcessorChain<juce::dsp::Gain<double>, juce::dsp::Gain<double> > chain1;
-  chain1.get<0>().setGainLinear(5.0);
-  chain1.get<1>().setGainLinear(5.0);
-
-  juce::dsp::ProcessorChain<juce::dsp::IIR::Filter<float>, juce::dsp::IIR::Filter<float>> chain;
-  chain.get<0>().coefficients = juce::dsp::IIR::Coefficients<float>::makePeakFilter(sampleRate, 1000.0f, 1.0f, 2.0f);
-
-  // auto filter = new juce::IIRFilter(juce::IIRCoefficients::makeHighPass(sampleRate, 1000, 1.0)); // in prepareToPlay
-  // filter->processSamples(buffer.getWritePointer(i), buffer.getNumSamples());    // in processBlock
-  */
 }
 
-void ParametricEQAudioProcessor::releaseResources()
+void FilterAudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
     // spare memory, etc.
 }
 
 #ifndef JucePlugin_PreferredChannelConfigurations
-bool ParametricEQAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+bool FilterAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
 {
   #if JucePlugin_IsMidiEffect
     juce::ignoreUnused (layouts);
@@ -149,27 +135,26 @@ bool ParametricEQAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 }
 #endif
 
-void ParametricEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void FilterAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
     auto numOutputChannels = getTotalNumOutputChannels();
     auto numInputChannels = getTotalNumInputChannels();
     auto numSamples = buffer.getNumSamples();
 
-    float gain = gainParam->get();
+    float gain = pow(10, gainParam->get() / 20.0);
     float Q = qParam->get();
     float centreFrequency = centreFrequencyParam->get();
     float sampleRate = (float)juce::AudioProcessor::getSampleRate();
     float normalisedFrequency = juce::MathConstants<float>::twoPi * centreFrequency / sampleRate;
-    float linearGain = pow(10.0f, gain / 20.0f);
     
     const float bandwidth = normalisedFrequency / Q;
     const double two_cos_wc = -2.0*cos(normalisedFrequency);
     const double tan_half_bw = tan(bandwidth / 2.0);
-    const double g_tan_half_bw = linearGain * tan_half_bw;
-    const double sqrt_g = sqrt(linearGain);
+    const double g_tan_half_bw = gain * tan_half_bw;
+    const double sqrt_g = sqrt(gain);
 
-    //see All About EQ paper        
+    //see Välimäki & Reiss (2016). All about audio equalization: Solutions and frontiers. Applied Sciences, 6(5), 2016.       
     // setCoefficients takes arguments: b0, b1, b2, a0, a1, a2. Normalises filter according to a0 for time-domain implementations
     auto coefficients = juce::IIRCoefficients(sqrt_g + g_tan_half_bw, /* b0 */
       sqrt_g * two_cos_wc, /* b1 */
@@ -178,13 +163,12 @@ void ParametricEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
       sqrt_g * two_cos_wc, /* a1 */
       sqrt_g - tan_half_bw /* a2 */);
 
-    auto newCoefficients = juce::IIRCoefficients::makePeakFilter(sampleRate, centreFrequency, Q, gain);
+    //auto coefficients = juce::IIRCoefficients::makePeakFilter(sampleRate, centreFrequency, Q, gain);
 
-    for (int i = 0; i < filters.size(); i++) filters[i]->setCoefficients(newCoefficients);
+    for (int i = 0; i < filters.size(); i++) filters[i]->setCoefficients(coefficients);
 
     for (int channel = 0; channel < numInputChannels; ++channel) {
       float* channelData = buffer.getWritePointer(channel);
-      for (int i = 0; i < numSamples; ++i) channelData[i] = 2.0f * rand() / (float)RAND_MAX - 1.0f;
       filters[channel]->processSamples(channelData, numSamples);
     }
 
@@ -192,25 +176,25 @@ void ParametricEQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 }
 
 //==============================================================================
-bool ParametricEQAudioProcessor::hasEditor() const
+bool FilterAudioProcessor::hasEditor() const
 {
     return true; // (change this to false if you choose to not supply an editor)
 }
 
-juce::AudioProcessorEditor* ParametricEQAudioProcessor::createEditor()
+juce::AudioProcessorEditor* FilterAudioProcessor::createEditor()
 {
     return new juce::GenericAudioProcessorEditor(this);
 }
 
 //==============================================================================
-void ParametricEQAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
+void FilterAudioProcessor::getStateInformation (juce::MemoryBlock& destData)
 {
     // You should use this method to store your parameters in the memory block.
     // You could do that either as raw data, or use the XML or ValueTree classes
     // as intermediaries to make it easy to save and load complex data.
 }
 
-void ParametricEQAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void FilterAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
     // You should use this method to restore your parameters from this memory block,
     // whose contents will have been created by the getStateInformation() call.
@@ -220,6 +204,6 @@ void ParametricEQAudioProcessor::setStateInformation (const void* data, int size
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new ParametricEQAudioProcessor();
+    return new FilterAudioProcessor();
 }
 

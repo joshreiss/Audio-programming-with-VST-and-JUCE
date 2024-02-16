@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="GpKxJo" name="PolySynth" projectType="audioplug" addUsingNamespaceToJuceHeader="1"
-              displaySplashScreen="1" jucerFormatVersion="1" pluginFormats="buildStandalone"
+              displaySplashScreen="1" jucerFormatVersion="1" pluginFormats="buildVST3"
               pluginCharacteristicsValue="pluginIsSynth,pluginProducesMidiOut,pluginWantsMidiIn">
   <MAINGROUP id="aIbUDh" name="PolySynth">
     <GROUP id="{01D5055C-6FF4-D8E9-75AC-618D19CE89C5}" name="Source">

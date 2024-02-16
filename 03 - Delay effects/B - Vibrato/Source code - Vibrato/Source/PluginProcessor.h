@@ -60,7 +60,6 @@ private:
     //==============================================================================
   float getLfoSample(float phase, int waveform);
   float interpolateSample(int type, float delayReadPosition, float* delayData, int delayBufferLength);
-  void parameterChanged();
   juce::AudioParameterFloat* lfoFrequencyParam;
   juce::AudioParameterFloat* sweepWidthParam;
   juce::AudioParameterChoice* lfoTypeParam;

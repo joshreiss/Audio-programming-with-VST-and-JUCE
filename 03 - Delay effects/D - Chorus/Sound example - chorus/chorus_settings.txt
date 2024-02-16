@@ -13,7 +13,7 @@ LFO Frequency: 0.2
 Number of Voices: 2
 Stereo: Off
 LFO Waveform: Sine
-Interpolation Type: Cubic
+Interpolation Type: Quadratic
 
 chorus_ex2 (stereo)
 ----------
@@ -24,4 +24,4 @@ LFO Frequency: 0.6
 Number of Voices: 3
 Stereo: On
 LFO Waveform: Sine
-Interpolation Type: Cubic
+Interpolation Type: Quadratic
