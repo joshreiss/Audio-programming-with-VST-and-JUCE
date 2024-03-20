@@ -151,52 +151,36 @@ void CompressorAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, j
     float alphaAttack = exp(-1.0f / (0.001f * sampleRate * attackTime));
     float alphaRelease = exp(-1.0f / (0.001f * sampleRate * releaseTime));
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
-        buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
+    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i) buffer.clear (i, 0, buffer.getNumSamples());
 
     auto numOutputChannels = getTotalNumOutputChannels();
     auto numInputChannels = getTotalNumInputChannels();
     for (int i = 0; i < buffer.getNumSamples(); ++i)
     {
-      float inputSignal = sinf(juce::MathConstants<float>::twoPi * inputPhase);
+        for (int j = 0; j < numInputChannels; ++j)
+        {
+            float inputSignal = buffer.getReadPointer(j)[i];
 
-      // Level detection- estimate level using peak detector
-      if (fabs(inputSignal) < 0.000001f) x_g = -120;
-      else x_g = 20 * log10(fabs(inputSignal));
+            // Level detection- estimate level using peak detector
+            if (fabs(inputSignal) < 0.000001f) x_g = -120;
+            else x_g = 20 * log10(fabs(inputSignal));
 
-      // Gain computer- static apply input/output curve
-      if (x_g >= threshold) y_g = threshold + (x_g - threshold) / ratio;
-      else y_g = x_g;
-      x_l = x_g - y_g;
+            // Gain computer- static apply input/output curve
+            if (x_g >= threshold) y_g = threshold + (x_g - threshold) / ratio;
+            else y_g = x_g;
+            x_l = x_g - y_g;
 
-      // Ballistics- smoothing of the gain 
-      if (x_l > yL_prev) y_l = alphaAttack * yL_prev + (1 - alphaAttack) * x_l;
-      else y_l = alphaRelease * yL_prev + (1 - alphaRelease) * x_l;
+            // Ballistics- smoothing of the gain 
+            if (x_l > yL_prev[j]) y_l = alphaAttack * yL_prev[j] + (1 - alphaAttack) * x_l;
+            else y_l = alphaRelease * yL_prev[j] + (1 - alphaRelease) * x_l;
 
-      // find control
-      c = pow(10.0f, (makeUpGain - y_l) / 20.0f);
-      yL_prev = y_l;
+            // find control
+            c = pow(10.0f, (makeUpGain - y_l) / 20.0f);
+            yL_prev[j] = y_l;
 
-      for (int j = 0; j < numInputChannels; ++j) buffer.getWritePointer(j)[i] = inputSignal * c;
-      //for (int j = 0; j < numInputChannels; ++j) buffer.getWritePointer(j)[i] = buffer.getReadPointer(j)[i] * (1.0f - depth * amount);
-
-      // Update input phase
-      inputPhase += 1000 / sampleRate;
-      while (inputPhase >= 1.0) inputPhase -= 1.0;
-
+            buffer.getWritePointer(j)[i] = inputSignal * c;
+        }
     }
 }
 

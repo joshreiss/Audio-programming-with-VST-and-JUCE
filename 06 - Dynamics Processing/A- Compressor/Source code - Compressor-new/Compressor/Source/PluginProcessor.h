@@ -63,6 +63,6 @@ private:
   juce::AudioParameterFloat* attackTimeParam;
   juce::AudioParameterFloat* releaseTimeParam;
   juce::AudioParameterFloat* makeUpGainParam;
-  float x_g, y_g, x_l, y_l, yL_prev, c, alphaAttack, alphaRelease;
-  float inputPhase = 0;             // Phase of the sinusoid, range 0 to 1
+  float x_g, y_g, x_l, y_l, c, alphaAttack, alphaRelease;
+  float yL_prev[2] = { 0.0,0.0 };
  };
