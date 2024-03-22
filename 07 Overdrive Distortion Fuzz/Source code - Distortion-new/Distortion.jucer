@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="xYz9jl" name="Distortion" useAppConfig="0" addUsingNamespaceToJuceHeader="0"
               displaySplashScreen="1" jucerFormatVersion="1" projectType="audioplug"
-              pluginFormats="buildStandalone">
+              pluginFormats="buildVST3">
   <MAINGROUP id="mjePLl" name="Distortion">
     <GROUP id="{3C645F5D-A042-5380-E332-09C5DE8D7475}" name="Source">
       <FILE id="bmXkau" name="PluginProcessor.cpp" compile="1" resource="0"
