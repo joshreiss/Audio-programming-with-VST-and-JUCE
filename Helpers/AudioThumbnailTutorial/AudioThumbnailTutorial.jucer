@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT name="AudioThumbnailTutorial" companyName="JUCE" version="1.0.0"
+              userNotes="Plays audio files and displays a thumbnail." companyWebsite="http://juce.com"
+              projectType="guiapp" useAppConfig="0" addUsingNamespaceToJuceHeader="1"
+              id="MImpWZ" jucerFormatVersion="1">
+  <MAINGROUP id="Hl68jo" name="AudioThumbnailTutorial">
+    <GROUP id="{E767EADA-B0F1-77FF-B35A-B2F34956697A}" name="Source">
+      <FILE id="MyIpCg" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="hH94Iw" name="AudioThumbnailTutorial_01.h" compile="0" resource="0"
+            file="Source/AudioThumbnailTutorial_01.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <EXPORTFORMATS>
+    <VS2022 targetFolder="Builds/VisualStudio2022">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_core" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_events" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_graphics" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:\Users\Joshua Reiss\OneDrive - Queen Mary, University of London\Desktop\CODE\JUCE\modules"/>
+      </MODULEPATHS>
+    </VS2022>
+  </EXPORTFORMATS>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
