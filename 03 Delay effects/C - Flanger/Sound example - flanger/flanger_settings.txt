@@ -1,0 +1,37 @@
+Flanger Effect: Settings
+
+Original sound by krestivo on freesound.org
+http://freesound.org/people/krestivo/sounds/27953/
+
+flanger_ex1 (using flanger_original)
+----------
+Min Delay (sec): 0.001
+Sweep Width: 0.01
+Depth: 1.0
+Feedback: 0.0
+LFO Frequency: 0.4
+Stereo: Off
+LFO Waveform: Sine
+Interpolation: Linear
+
+flanger_ex2 (with feedback, using flanger_original)
+----------
+Min Delay (sec): 0.0015
+Sweep Width: 0.01
+Depth: 1.0
+Feedback: 0.5
+LFO Frequency: 0.8
+Stereo: Off
+LFO Waveform: Sine
+Interpolation: Quadratic
+
+flanger_ex3 (stereo, using chorus_original for comparison to chorus)
+-----------
+Min Delay (sec): 0.0025
+Sweep Width: 0.01
+Depth: 1.0
+Feedback: 0.0
+LFO Frequency: 0.2
+Stereo: On
+LFO Waveform: Sine
+Interpolation: Quadratic

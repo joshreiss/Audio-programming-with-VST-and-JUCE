@@ -1,0 +1,1 @@
+There's a bug in the VST3 version, where it usually does not produce sound. The standalone plugin works fine.
